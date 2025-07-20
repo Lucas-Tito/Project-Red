@@ -6,22 +6,48 @@ if [ -z "${LD_PRELOAD+x}" ]; then
     export LD_PRELOAD
 fi
 
+# Function to wait for PostgreSQL
+wait_for_postgres() {
+    echo "Waiting for PostgreSQL to become available..."
+    
+    max_attempts=30
+    attempt=0
+    
+    while [ $attempt -lt $max_attempts ]; do
+        if ./bin/rails runner "ActiveRecord::Base.connection" >/dev/null 2>&1; then
+            echo "PostgreSQL is available!"
+            return 0
+        fi
+        
+        attempt=$((attempt + 1))
+        echo "Attempt $attempt/$max_attempts - PostgreSQL is not ready yet, waiting..."
+        sleep 2
+    done
+    
+    echo "PostgreSQL did not become available after $max_attempts attempts"
+    exit 1
+}
+
 # Check if we're running the Rails server
-# O comando passado (CMD no Dockerfile) é "$*"
+# The command passed (CMD in Dockerfile) is "$*"
 if [[ "$*" == *"rails server"* ]] || [[ "$*" == *"./bin/rails server"* ]]; then
-    # echo "Entrypoint: Detectado comando para iniciar o servidor Rails." # Opcional
-    # echo "Entrypoint: Removendo server.pid antigo..." # Opcional
+    # echo "Entrypoint: Detected command to start Rails server." # Optional
+    
+    # Wait for PostgreSQL to be ready before doing database operations
+    wait_for_postgres
+    
+    # echo "Entrypoint: Removing old server.pid..." # Optional
     rm -f tmp/pids/server.pid
 
-    # echo "Entrypoint: Configurando banco de dados..." # Opcional
+    # echo "Entrypoint: Setting up database..." # Optional
     ./bin/rails db:prepare
 
     if [ "$RAILS_ENV" = "development" ]; then
-      # echo "Entrypoint: Populando banco de dados de desenvolvimento..." # Opcional
+      # echo "Entrypoint: Seeding development database..." # Optional
       ./bin/rails db:seed
     fi
-    # echo "Entrypoint: Configuração do banco de dados completa." # Opcional
+    # echo "Entrypoint: Database setup complete." # Optional
 fi
 
-# echo "Entrypoint: Executando comando: $@" # Pode ser útil para saber o que está sendo executado
+# echo "Entrypoint: Executing command: $@" # Can be useful to know what is being executed
 exec "$@"

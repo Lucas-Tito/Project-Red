@@ -17,11 +17,11 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h db -U postgres || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/up || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     stdin_open: true
     tty: true
     restart: unless-stopped
@@ -45,13 +45,13 @@ services:
       - .:/rails
       - bundle_cache:/usr/local/bundle # Shares same cache as gems
     depends_on:
-      - app
+      app:
+        condition: service_healthy
     environment:
       - RAILS_ENV=development
     stdin_open: true
     tty: true
     restart: unless-stopped
-
 
   db:
     image: postgres:15
