@@ -1,36 +1,36 @@
-<div data-controller="authentication" class="flex flex-col items-center min-h-screen bg-[var(--color-background)] mt-10">
+<div data-controller="authentication" class="login-page-container">
   <div class="text-center">
-    <h1 class="text-4xl font-bold text-[var(--color-primary)] mb-4 max-w-lg mx-auto">
+    <h1 class="login-title">
       <%= t("login.defaults.title") %>
     </h1>
-    <p class="text-lg text-[var(--color-secondary)] mb-8">
+    <p class="login-subtitle">
       <%= t("login.defaults.subtitle") %>
     </p>
     <button data-action="click->authentication#signInWithGoogle"
     data-authentication-target="loginButton"
-    class="!flex bg-[var(--color-accent)] gap-2 hover:bg-[var(--color-accent-hover)] text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 mx-auto items-center justify-center">
+    class="login-google-button">
       <%= t("login.defaults.login-button") %>
       <%= render "shared/icons/google_icon", css_class: "w-5 h-5 stroke-white inline-block align-middle" %>
     </button>
   </div>
 
   <div data-controller="theme">
-    <button type="button" data-action="click->theme#toggle" class="fixed top-4 right-6 z-50 p-2 theme-switcher-btn">
+    <button type="button" data-action="click->theme#toggle" class="login-theme-switcher">
       <%= render "shared/icons/moon_icon", css_class: "h-6 w-6" %>
       <%= render "shared/icons/sun_icon", css_class: "h-6 w-6 hidden" %>
     </button>
   </div>
 
-  <div class="mt-18 py-14">
-    <div class="max-w-4xl mx-auto">
-      <div class="flex items-start justify-between gap-8">
+  <div class="features-cards-section">
+    <div class="width-limiter-container">
+      <div class="feature-cards-section-text-container">
         <div class="flex-1">
-          <h1 class="text-3xl font-bold text-[var(--color-secondary)] max-w-175">
+          <h1 class="feature-cards-section-title">
             <%= t("login.defaults.features-title") %>
           </h1>
         </div>
         <div class="flex-1">
-          <p class="text-base text-[var(--color-secondary)]">
+          <p class="feature-cards-section-subtitle">
             <%= t("login.defaults.features-subtitle") %>
           </p>
         </div>
@@ -38,57 +38,57 @@
       
       <!-- SVGs Cards -->
       <div class="flex justify-between mt-6">
-        <div class="rounded-lg shadow-lg flex-1 max-w-72 h-64 bg-[var(--color-surface)] relative overflow-hidden"
+        <div class="cards-container"
              data-controller="card-hover" 
              data-action="mouseenter->card-hover#showGif mouseleave->card-hover#hideGif">
           
           <!-- Card -->
-          <div data-card-hover-target="card" class="flex items-center justify-center w-full h-full">
+          <div data-card-hover-target="card" class="card-svg-container">
             <%= render "shared/icons/fastfoward_icon", css_class: "w-20 h-20 fill-[var(--color-secondary)]" %>
-            <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">
+            <h3 class="card-svg-title">
               <%= t("login.defaults.agility-card") %>
             </h3>
           </div>
           
           <!-- Hover GIF -->
-          <div data-card-hover-target="gif" class="flex items-center justify-center w-full h-full">
-            <%= image_tag "agility_gif.gif", alt: "Demonstração de agilidade", class: "w-full h-full object-cover rounded-lg" %>
+          <div data-card-hover-target="gif" class="card-gif-container">
+            <%= image_tag "agility_gif.gif", alt: "Demonstração de agilidade", class: "card-gif" %>
           </div>
         </div>
         
-        <div class="rounded-lg shadow-lg flex-1 max-w-72 h-64 bg-[var(--color-surface)] relative overflow-hidden"
+        <div class="cards-container"
              data-controller="card-hover" 
              data-action="mouseenter->card-hover#showGif mouseleave->card-hover#hideGif">
           
           <!-- Card -->
-          <div data-card-hover-target="card" class="flex items-center justify-center w-full h-full">
+          <div data-card-hover-target="card" class="card-svg-container">
             <%= render "shared/icons/team_icon", css_class: "w-20 h-20 stroke-[var(--color-secondary)]" %>
-            <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">
+            <h3 class="card-svg-title">
               <%= t("login.defaults.collaboration-card") %>
             </h3>
           </div>
           
           <!-- Hover GIF -->
-          <div data-card-hover-target="gif" class="flex items-center justify-center w-full h-full">
-            <%= image_tag "agility_gif.gif", alt: "Demonstração de colaboração", class: "w-full h-full object-cover rounded-lg" %>
+          <div data-card-hover-target="gif" class="card-gif-container">
+            <%= image_tag "agility_gif.gif", alt: "Demonstração de colaboração", class: "card-gif" %>
           </div>
         </div>
 
-        <div class="rounded-lg shadow-lg flex-1 max-w-72 h-64 bg-[var(--color-surface)] relative overflow-hidden" 
+        <div class="cards-container" 
              data-controller="card-hover" 
              data-action="mouseenter->card-hover#showGif mouseleave->card-hover#hideGif">
           
           <!-- Card -->
-          <div data-card-hover-target="card" class="flex items-center justify-center w-full h-full">
+          <div data-card-hover-target="card" class="card-svg-container">
             <%= render "shared/icons/paint_brush_icon", css_class: "w-20 h-20 stroke-[var(--color-secondary)]" %>
-            <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">
+            <h3 class="card-svg-title">
               <%= t("login.defaults.customization-card") %>
             </h3>
           </div>
           
           <!-- Hover GIF -->
-          <div data-card-hover-target="gif" class="flex items-center justify-center w-full h-full">
-            <%= image_tag "customization_gif.gif", alt: "Demonstração de customização", class: "w-full h-full object-cover rounded-lg" %>
+          <div data-card-hover-target="gif" class="card-gif-container">
+            <%= image_tag "customization_gif.gif", alt: "Demonstração de customização", class: "card-gif" %>
           </div>
         </div>
       </div>
@@ -96,18 +96,18 @@
   </div>
 
   <!-- AI GIF Section -->
-  <div class="w-full bg-[var(--color-surface)] py-14 mt-24">
-    <div class="flex flex-col items-center justify-center gap-8">
-      <div class="text-center max-w-xl mx-auto">
-        <h1 class="text-2xl font-bold text-[var(--color-secondary)] mb-1">
+  <div class="ai-gif-section">
+    <div class="ai-gif-container">
+      <div class="ai-gif-text-container">
+        <h1 class="ai-gif-title">
           <%= t("login.defaults.ai-feat-title") %>
         </h1>
-        <p class="text-base text-[var(--color-secondary)]">
+        <p class="ai-gif-subtitle">
             <%= t("login.defaults.ai-feat-description") %>
         </p>
       </div>
       <div class="flex-shrink-0">
-        <%= image_tag "gif_summarize_tasks.gif", alt: "Demonstração de UX", class: "w-185 h-auto rounded-lg shadow-lg" %>
+        <%= image_tag "gif_summarize_tasks.gif", alt: "Demonstração de UX", class: "ai-gif" %>
       </div>
     </div>
   </div>

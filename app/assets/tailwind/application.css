@@ -43,6 +43,7 @@
 @import "./_sidebar.css";
 @import "./_color_selection.css";
 @import "./_ai_page.css";
+@import "./_login_page.css";
 
 body{
   @apply bg-[var(--color-background)];
