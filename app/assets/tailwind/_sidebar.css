@@ -50,5 +50,5 @@
 }
 
 .ai-summary-btn{
-    @apply align-center border-none w-full p-4 text-base font-medium text-[var(--color-secondary)] cursor-pointer hover:bg-[var(--color-background-hover)] rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
+    @apply flex items-center text-center border-none w-full p-4 text-base font-medium text-[var(--color-secondary)] cursor-pointer hover:bg-[var(--color-background-hover)] rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
