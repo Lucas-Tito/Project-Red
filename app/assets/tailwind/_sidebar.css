@@ -1,9 +1,9 @@
 .panel-toggle-btn{
-    @apply text-[var(--color-tertiary)] rounded-md hover:text-[var(--color-primary)] hover:bg-[var(--color-background-hover)] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 cursor-pointer;
+    @apply p-2 text-[var(--color-tertiary)] rounded-md hover:text-[var(--color-primary)] hover:bg-[var(--color-background-hover)] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 cursor-pointer;
 }
 
 .sidebar-panel{
-    @apply bg-[var(--color-background)] border-r border-[var(--color-border)];
+    @apply absolute top-0 left-0 z-20 w-64 h-screen flex flex-col flex-shrink-0 bg-[var(--color-background)] border-r border-[var(--color-border)];
     transform: translateX(-100%);
     transition: transform 0.2s ease-in-out;
     display: flex !important; /* overwrites display none from hidden class */
@@ -18,19 +18,27 @@
 }
 
 .sidebar-header{
-    @apply justify-between items-center border-b border-[var(--color-border)];
+    @apply p-4 flex justify-between items-center border-b border-[var(--color-border)];
 }
 
 .sidebar-header-text{
     @apply text-lg font-semibold text-[var(--color-secondary)];
 }
 
+.theme-switcher-container{
+    @apply flex items-center space-x-2;
+}
+
 .theme-switcher-btn{
-    @apply text-[var(--color-tertiary)] rounded-full hover:bg-[var(--color-background-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer;
+    @apply p-2 text-[var(--color-tertiary)] rounded-full hover:bg-[var(--color-background-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer;
 }
 
 .close-sidebar-btn{
     @apply text-[var(--color-tertiary)] rounded-md hover:text-[var(--color-primary)] hover:bg-[var(--color-background-hover)] focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer;
+}
+
+.sidebar-body{
+    @apply flex-grow overflow-y-auto;
 }
 
 .sidebar-board-section{
@@ -38,9 +46,9 @@
 }
 
 .new-board-btn{
-    @apply text-sm font-medium text-[var(--color-tertiary)] cursor-pointer hover:bg-[var(--color-background-hover)] rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
+    @apply w-full text-left flex items-center px-3 py-2 p-0 border-none text-sm font-medium text-[var(--color-tertiary)] cursor-pointer hover:bg-[var(--color-background-hover)] rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
 
 .ai-summary-btn{
-    @apply text-base font-medium text-[var(--color-secondary)] cursor-pointer hover:bg-[var(--color-background-hover)] rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
+    @apply align-center border-none w-full p-4 text-base font-medium text-[var(--color-secondary)] cursor-pointer hover:bg-[var(--color-background-hover)] rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
 }

@@ -1,21 +1,20 @@
 <div data-controller="toggle" class="relative">
   <%# --- Panel Toggle Btn --- %>
-  <button type="button" data-action="click->toggle#fire" class="p-2 panel-toggle-btn">
+  <button type="button" data-action="click->toggle#fire" class="panel-toggle-btn">
     <span class="sr-only">Abrir menu</span>
     <%= render "shared/icons/sidebar_icon", css_class: "h-6 w-6" %>
   </button>
 
   <%# --- Sidebar Panel --- %>
-  <aside data-toggle-target="toggleable" class="hidden absolute top-0 left-0 z-20 w-64 h-screen flex flex-col flex-shrink-0 sidebar-panel">
+  <aside data-toggle-target="toggleable" class="hidden sidebar-panel">
 
     <%# Sidebar Header %>
-    <div class="p-4 flex sidebar-header">
+    <div class="sidebar-header">
       <h2 class="sidebar-header-text"><%= t("boards.defaults.my-boards") %></h2>
 
-      <div class="flex items-center space-x-2">
-        
+      <div class="theme-switcher-container">
         <div data-controller="theme">
-          <button type="button" data-action="click->theme#toggle" class="p-2 theme-switcher-btn">
+          <button type="button" data-action="click->theme#toggle" class="theme-switcher-btn">
             <%= render "shared/icons/moon_icon", css_class: "h-5 w-5" %>
             <%= render "shared/icons/sun_icon", css_class: "h-5 w-5 hidden" %>
           </button>
@@ -30,18 +29,18 @@
     </div>
 
     <%# Sidebar Body %>
-    <nav id="boards_list_container" class="flex-grow overflow-y-auto">
+    <nav id="boards_list_container" class="sidebar-body">
     <div class="sidebar-board-section">
       <%= render partial: "boards/board", collection: @boards, as: :board, locals: { current_board: @current_board } %>
 
       <%= form_with(model: Board.new, url: boards_path(format: :turbo_stream), class: "mt-2", id: "new_board_form") do |form| %>
-        <%= form.button class: "w-full text-left flex items-center px-3 py-2 p-0 border-none new-board-btn" do %>
+        <%= form.button class: "new-board-btn" do %>
           <%= t("boards.defaults.new-board") %>
         <% end %>
       <% end %>
     </div>
 
-      <%= link_to ai_path, class: "w-full flex items-center align-center p-4 border-none ai-summary-btn" do %>
+      <%= link_to ai_path, class: "flex items-center ai-summary-btn" do %>
           <%= t("summary.defaults.title") %>
           <%= render "shared/icons/sparkles_icon", css_class: "h-5 w-5 ml-1" %>
       <% end %>
