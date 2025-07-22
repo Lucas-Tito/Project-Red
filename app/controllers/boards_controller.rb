@@ -51,6 +51,12 @@ class BoardsController < ApplicationController
   def update
     respond_to do |format|
       if @board.update(board_params)
+        # Broadcast to all board collaborators
+        BoardChannel.broadcast_to(@board, {
+          action: 'board_updated',
+          board: @board
+        })
+        
         format.turbo_stream { redirect_to app_root_path, status: :see_other }
         format.json { render json: @board, status: :ok }
         format.html { redirect_to app_root_path, notice: 'Board atualizado.' }
@@ -62,11 +68,20 @@ class BoardsController < ApplicationController
   end
 
   def destroy
+    # Store board id before destruction for broadcast
+    board_id = @board.id
+    
     @board.destroy
+
+    # Broadcast to all board collaborators about board deletion
+    BoardChannel.broadcast_to_id(board_id, {
+      action: 'board_deleted',
+      board_id: board_id
+    })
 
     # If the deleted board was the active one,
     # defines first board from list as active.
-    if session[:board_id] == @board.id
+    if session[:board_id] == board_id
       session[:board_id] = current_user.boards.order(:name).first&.id
     end
 

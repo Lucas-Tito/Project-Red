@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_14_135327) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_21_014202) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "board_shared_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "board_id", null: false
+    t.bigint "user_id"
+    t.string "token", null: false
+    t.integer "permission", default: 0, null: false
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["board_id"], name: "index_board_shared_links_on_board_id"
+    t.index ["token"], name: "index_board_shared_links_on_token", unique: true
+    t.index ["user_id"], name: "index_board_shared_links_on_user_id"
+  end
 
   create_table "boards", force: :cascade do |t|
     t.string "name", null: false
@@ -57,6 +70,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_14_135327) do
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
+  add_foreign_key "board_shared_links", "boards"
+  add_foreign_key "board_shared_links", "users"
   add_foreign_key "boards", "users"
   add_foreign_key "lists", "boards"
   add_foreign_key "tasks", "lists"

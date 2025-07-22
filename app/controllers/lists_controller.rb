@@ -4,6 +4,14 @@ class ListsController < ApplicationController
   def move
     @list = List.find(params[:id])
     @list.insert_at(params[:position].to_i)
+    
+    # Broadcast to all board collaborators
+    BoardChannel.broadcast_to(@list.board, {
+      action: 'list_moved',
+      list_id: @list.id,
+      new_position: params[:position].to_i
+    })
+    
     head :ok
   end
 
@@ -24,6 +32,16 @@ class ListsController < ApplicationController
 
     respond_to do |format|
       if @list.save
+        # Broadcast to all board collaborators
+        BoardChannel.broadcast_to(@current_board, {
+          action: 'list_created',
+          list: @list,
+          html: ApplicationController.render(
+            partial: 'lists/list',
+            locals: { list: @list, start_editing_name: false }
+          )
+        })
+        
         format.turbo_stream do
           streams = [
               # Inserts new list before "New List" button.
@@ -71,6 +89,16 @@ class ListsController < ApplicationController
     # @list is defined by before_action
     respond_to do |format|
       if @list.update(list_params)
+        # Broadcast to all board collaborators
+        BoardChannel.broadcast_to(@list.board, {
+          action: 'list_updated',
+          list: @list,
+          html: ApplicationController.render(
+            partial: 'lists/list',
+            locals: { list: @list }
+          )
+        })
+        
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(dom_id(@list),
                                                    partial: "lists/list",
@@ -94,7 +122,18 @@ class ListsController < ApplicationController
   # DELETE /lists/:id
   def destroy
     # @list is defined by before_action
+    # Store board reference before destroying list
+    board = @list.board
+    list_id = @list.id
+    
     @list.destroy
+    
+    # Broadcast to all board collaborators
+    BoardChannel.broadcast_to(board, {
+      action: 'list_deleted',
+      list_id: list_id
+    })
+    
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@list)) }
       format.html { redirect_to tasks_path, notice: "list excluded successfully.", status: :see_other }
