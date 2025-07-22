@@ -1,6 +1,7 @@
 class Board < ApplicationRecord
   belongs_to :user
   has_many :lists, -> { order(position: :asc) }, dependent: :destroy
+  has_many :board_shared_links, dependent: :destroy
   validates :name, presence: true
 
   before_validation :set_default_name, on: :create

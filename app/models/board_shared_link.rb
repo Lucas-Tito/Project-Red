@@ -3,7 +3,7 @@ class BoardSharedLink < ApplicationRecord
   belongs_to :created_by, class_name: 'User', foreign_key: 'user_id', optional: true
 
   # Enum for permissions
-  enum permission: { viewer: 0, editor: 1 }
+  enum :permission, { viewer: 0, editor: 1 }
 
   # Validations
   validates :token, presence: true, uniqueness: true

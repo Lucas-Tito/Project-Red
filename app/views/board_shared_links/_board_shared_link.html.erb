@@ -1,0 +1,15 @@
+<div id="<%= dom_id(board_shared_link) %>" class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded">
+  <div class="flex-grow mr-4">
+    <input type="text" value="<%= board_shared_link.url(request) %>" readonly
+           class="w-full bg-transparent border-0 text-sm text-gray-600 dark:text-gray-300 focus:ring-0">
+    <span class="text-xs text-gray-400">
+      <%= t("boards.share.permissions.#{board_shared_link.permission}") %> - <%= t('boards.share.expires_in', time: time_ago_in_words(board_shared_link.expires_at)) %>
+    </span>
+  </div>
+  <div class="flex items-center gap-2">
+    <button data-action="click->share#copy" data-share-url-param="<%= board_shared_link.url(request) %>" class="btn-icon" title="<%= t('boards.share.copy_link') %>">
+      </button>
+    <button data-action="click->share#revokeLink" data-share-id-param="<%= board_shared_link.id %>" class="btn-icon text-red-500 hover:text-red-700" title="<%= t('boards.share.revoke') %>">
+      </button>
+  </div>
+</div>

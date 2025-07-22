@@ -76,6 +76,21 @@
         </div>
       <% end %>
 
+    <div data-controller="share" data-share-board-id-value="<%= @current_board.id if @current_board %>">
+      <div class="fixed top-4 right-18 z-50">
+        <% if @current_board %>
+          <button data-action="click->share#open"
+              class="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors duration-200">
+            <%= render "shared/icons/share_icon", css_class: "w-6 h-6" %>
+          </button>
+        <% end %>
+      </div>
+
+      <% if @current_board %>
+        <%= render "shared/share_modal" %>
+      <% end %>
+    </div>
+
       <%# Renders Sidebar. It's only visible if @boards is defined in the controller. %>
       <%= render "layouts/sidebar" if @boards %>
 

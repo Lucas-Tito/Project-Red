@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   resource :ai, only: [:show, :create]
 
   resources :boards, only: [:create, :update, :destroy, :index, :show] do
-    resources :board_shared_links, only: [:create, :index], path: 'shared_links'
+    resources :board_shared_links, only: [:create, :index, :destroy], path: 'shared_links'
   end
 
   post '/login', to: 'sessions#create'

@@ -29,10 +29,20 @@ class BoardSharedLinksController < ApplicationController
     end
   end
 
+  def destroy
+    authorize @board, :share?
+    @shared_link.destroy
+    head :no_content # Returns 204 No Content
+  end
+
   private
 
   def set_board
     @board = current_user.boards.find(params[:board_id])
+  end
+
+  def set_shared_link
+    @shared_link = @board.board_shared_links.find(params[:id])
   end
 
   def shared_link_params
