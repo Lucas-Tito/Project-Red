@@ -33,6 +33,10 @@ en:
       my-boards: "My Boards"
       new-board: "+ Create New Board"
       empty-board: "No lists yet"
+    share:
+      expires-in: "Expires in"
+      copy-link: "Copy"
+      revoke-link: "Revoke"
   summary:
     defaults:
       title: "Task  Summary"

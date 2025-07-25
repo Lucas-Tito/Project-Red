@@ -6,6 +6,15 @@ class Board < ApplicationRecord
 
   before_validation :set_default_name, on: :create
 
+  # Checks if the given user is the owner of the board.
+  #
+  # @param user_to_check [User] The user to check against the board's owner.
+  # @return [Boolean] Returns true if the user is the owner, false otherwise.
+  def owner?(user_to_check)
+    # The `user` association comes from `belongs_to :user`.
+    user == user_to_check
+  end
+
   private
 
   def set_default_name

@@ -7,9 +7,9 @@
     </span>
   </div>
   <div class="flex items-center gap-2">
-    <button data-action="click->share#copy" data-share-url-param="<%= board_shared_link.url(request) %>" class="btn-icon" title="<%= t('boards.share.copy_link') %>">
+    <button data-action="click->share#copy" data-share-url-param="<%= board_shared_link.url(request) %>" class="btn-icon" title="<%= t('boards.share.copy-link') %>">
       </button>
-    <button data-action="click->share#revokeLink" data-share-id-param="<%= board_shared_link.id %>" class="btn-icon text-red-500 hover:text-red-700" title="<%= t('boards.share.revoke') %>">
+    <button data-action="click->share#revokeLink" data-share-id-param="<%= board_shared_link.id %>" class="btn-icon text-red-500 hover:text-red-700" title="<%= t('boards.share.revoke-link') %>">
       </button>
   </div>
 </div>

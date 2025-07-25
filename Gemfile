@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "pundit"
 gem 'google-id-token'
 gem 'httparty'
 gem 'acts_as_list'

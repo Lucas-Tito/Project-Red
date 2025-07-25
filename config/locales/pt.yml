@@ -33,6 +33,10 @@ pt:
       my-boards: "Meus Boards"
       new-board: "+ Criar Novo Board"
       empty-board: "Nenhuma lista adicionada ainda"
+    share:
+      expires-in: "Expira em"
+      copy-link: "Copy"
+      revoke-link: "Revogar"
   summary:
     defaults:
       title: "Resumo de Tarefas"

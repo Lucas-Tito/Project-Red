@@ -1,10 +1,37 @@
 class BoardsController < ApplicationController
-  before_action :set_board, only: [:update, :destroy]
+  # Use different `set_board` methods for different authorization needs.
+  before_action :set_board_for_user, only: [:update, :destroy]
+  before_action :set_board_for_guest_or_user, only: [:show]
 
-
+  # This is the main dashboard view for the entire application.
   def index
-    @boards = current_user.boards.order(:name)
+    # @current_board is set in ApplicationController.
+    if current_user
+      # A logged-in user sees all their boards in the sidebar.
+      @boards = current_user.boards.order(:name)
+    elsif @current_board
+      # A guest user will only see the single board they have access to.
+      @boards = Board.where(id: @current_board.id)
+    else
+      # Fallback to prevent errors. This should not normally be reached.
+      @boards = Board.none
+    end
+
+    # Load the lists and tasks for the active board, if one is set.
     @lists = @current_board.lists.includes(:tasks).order(:position) if @current_board
+  end
+
+  # This action is the "gatekeeper" for shared links.
+  def show
+    # 1. Authorize the user/guest against the board record using Pundit.
+    authorize @board
+
+    # 2. If authorized, set the board_id in the session.
+    #    The ApplicationController uses this to set @current_board on subsequent requests.
+    session[:board_id] = @board.id
+
+    # 3. Redirect to the main dashboard, which is this controller's `index` action.
+    redirect_to boards_path
   end
 
   # POST /boards or /boards.turbo_stream
@@ -15,7 +42,7 @@ class BoardsController < ApplicationController
     respond_to do |format|
       if @board.save
         session[:board_id] = @board.id
-        @current_board = @board # Update @current_board to the new board for the rendering context
+        @current_board = @board # Update @current_board for the rendering context
 
         format.turbo_stream do
           render turbo_stream: [
@@ -86,7 +113,6 @@ class BoardsController < ApplicationController
     end
 
     respond_to do |format|
-
       # For Turbo Stream and HTML requests, the best response is a redirect.
       # Turbo will intercept and handle the transition intelligently.
       # The notice ensures that the user sees a confirmation.
@@ -97,13 +123,18 @@ class BoardsController < ApplicationController
 
   private
 
-  def set_board
+  def set_board_for_user
+    # This is for actions that ONLY a logged-in user can perform.
     @board = current_user.boards.find(params[:id])
+  end
+
+  def set_board_for_guest_or_user
+    # This is for the `show` action, which can be accessed by anyone with a valid token.
+    @board = Board.find(params[:id])
   end
 
   # Use .fetch to prevent crash if 'board' param doesn't exists
   def board_params
     params.fetch(:board, {}).permit(:name)
   end
-
 end
